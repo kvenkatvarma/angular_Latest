@@ -52,7 +52,7 @@
                   <div class="dropdown">
                       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Project A</button>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#" *ngFor="let project of Projects">{{project}}</a>
+                        <a class="dropdown-item" href="#" *ngFor="let project of Projects" onclick="return false" (click)="onProjectChange($event)">{{project}}</a>
                       </div>
                   </div>
               </div>
