@@ -123,6 +123,7 @@
       <div class="accordion" id="accordion1">
         <!-- east starts -->
         <div class="card" *ngFor="let teamMembersGroup of TeamMembers;let i=index">
+
           <div class="card-header bg-secondary" id="card1">
             <h2 class="mb-0">
               <button
@@ -137,25 +138,42 @@
           </div>
           <div [id]="'cardbody' + i" class="collapse" data-parent="#accordion1" [ngClass]="i == 0 ? 'show' : ''">
             <div class="card-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let member of teamMembersGroup.Members">
-                    <td>{{member.ID}}</td>
-                    <td [style.color]="(member.Status == 'Busy') ? 'red':'black'">{{member.Name}}</td>
-                    <td>{{member.Status}}</td>
-                  </tr>
+              <div *ngIf="i == 0;then firstTemplate; else secondTemplate">
 
-                </tbody>
-              </table>
+              </div>
+              <ng-template #firstTemplate>
+                <div class="card" *ngFor="let member of teamMembersGroup.Members">
+                  <div class="card-header bg-primary text-white">
+                    #{{ member.ID }} {{ member.Name }}
+                  </div>
+                  <div class="card-body">{{ member.Status }}</div>
+                </div>
+              </ng-template>
+
+              <ng-template #secondTemplate>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let member of teamMembersGroup.Members">
+                      <td>{{member.ID}}</td>
+                      <td [style.color]="(member.Status == 'Busy') ? 'red':'black'">{{member.Name}}</td>
+                      <td>{{member.Status}}</td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </ng-template>
+
+
             </div>
           </div>
+
         </div>
         <!-- east ends -->
 
