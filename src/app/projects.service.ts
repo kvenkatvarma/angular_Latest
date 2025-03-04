@@ -21,4 +21,7 @@ export class ProjectsService {
   updateProject(existingroject:Project):Observable<Project>{
     return this.httpClient.put<Project>("/api/projects",existingroject);
   }
+ deleteProject(projectID:number):Observable<string>{
+    return this.httpClient.delete<string>("/api/projects?projectID =" + projectID);
+  }
 }
