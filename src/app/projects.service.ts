@@ -24,4 +24,8 @@ export class ProjectsService {
  deleteProject(projectID:number):Observable<string>{
     return this.httpClient.delete<string>("/api/projects?projectID =" + projectID);
   }
+
+  searchProjects(searchBy:string, searchText:string):Observable<Project[]>{
+   return this.httpClient.get<Project[]>("api/projects/search/" + searchBy + "/" + searchText)
+  }
 }
