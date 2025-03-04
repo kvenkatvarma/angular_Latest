@@ -13,4 +13,12 @@ export class ProjectsService {
   getAllProjects():Observable<Project[]>{
     return this.httpClient.get<Project[]>("/api/projects");
   }
+
+  insertProject(newProject:Project):Observable<Project>{
+    return this.httpClient.post<Project>("/api/projects",newProject);
+  }
+
+  updateProject(existingroject:Project):Observable<Project>{
+    return this.httpClient.put<Project>("/api/projects",existingroject);
+  }
 }
