@@ -23,6 +23,10 @@ export class ProjectsComponent implements OnInit {
     this.projectService.getAllProjects().subscribe(
       (response:Project[])=>{
        this.projects = response;
+      },
+      (error)=>{
+        console.log(error);
+        alert("Authentication Failed");
       }
     );
   }

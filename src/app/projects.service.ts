@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient,HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Project } from './project';
 import {map} from "rxjs/operators";
@@ -12,7 +12,15 @@ export class ProjectsService {
   constructor(private httpClient:HttpClient) { }
 
   getAllProjects():Observable<Project[]>{
-    return this.httpClient.get<Project[]>("/api/projects").pipe(map(
+    var currentUser = {token : ""};
+    var headers = new HttpHeaders();
+    headers = headers.set("Authorization","Bearer ");
+    if(sessionStorage.currentUser != null){
+      currentUser = JSON.parse(sessionStorage.currentUser);
+      headers = headers.set("Authorization","Bearer " + currentUser.token);
+    }
+
+    return this.httpClient.get<Project[]>("/api/projects",{headers:headers}).pipe(map(
       (data:Project[])=>{
         for(let i =0; i <data.length;i++)
         {

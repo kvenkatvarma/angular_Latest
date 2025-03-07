@@ -17,11 +17,13 @@ export class LoginService {
      {
 
       this.currentUserName = user.userName;
+      sessionStorage.currentUser = JSON.stringify(user);
      }
      return user;
    }));
   }
   public logout(){
+    sessionStorage.removeItem("currentUser");
     this.currentUserName = null;
   }
 }
