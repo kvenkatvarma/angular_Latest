@@ -8,9 +8,9 @@ import { CanActivateGuardService } from './can-activate-guard.service';
 const routes: Routes = [
   {path:'',redirectTo:"login",pathMatch:"full"},
  {path:'login',component:LoginComponent},
- {path:'dashboard',component:DashboardComponent,canActivate:[CanActivateGuardService]},
+ {path:'dashboard',component:DashboardComponent,canActivate:[CanActivateGuardService],data:{expectedRole : "admin"}},
  {path:'about',component:AboutComponent},
- {path:'projects',component:ProjectsComponent,canActivate:[CanActivateGuardService]},
+ {path:'projects',component:ProjectsComponent,canActivate:[CanActivateGuardService],data:{expectedRole : "admin"}},
  {path:"",redirectTo:'dashboard',pathMatch:'full'}
 ];
 
