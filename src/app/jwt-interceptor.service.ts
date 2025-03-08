@@ -13,9 +13,9 @@ export class JwtInterceptorService implements HttpInterceptor {
     if(sessionStorage.currentUser != null){
       currentUser = JSON.parse(sessionStorage.currentUser);
     }
-    request.clone({
+   request = request.clone({
      setHeaders :{
-      Authorization : "Bearer " + currentUser.token
+      Authorization: `Bearer ${currentUser.token}`
      }
     });
     return next.handle(request);
