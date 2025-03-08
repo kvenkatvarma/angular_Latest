@@ -10,7 +10,7 @@ const routes: Routes = [
  {path:'login',component:LoginComponent},
  {path:'dashboard',component:DashboardComponent,canActivate:[CanActivateGuardService],data:{expectedRole : "admin"}},
  {path:'about',component:AboutComponent},
- {path:'projects',component:ProjectsComponent,canActivate:[CanActivateGuardService],data:{expectedRole : "admin"}},
+ {path:'projects',component:ProjectsComponent},
  {path:"",redirectTo:'dashboard',pathMatch:'full'}
 ];
 

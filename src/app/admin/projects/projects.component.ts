@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from '../../projects.service';
 import { Project } from 'src/app/project';
+import { ClientLocation } from 'src/app/client-location';
+import { ClientLocationsService } from 'src/app/client-locations.service';
 
 @Component({
   selector: 'app-projects',
@@ -10,6 +12,7 @@ import { Project } from 'src/app/project';
 export class ProjectsComponent implements OnInit {
 
   projects:Project[];
+  clientLocations: ClientLocation[] =[];
   newProject:Project = new Project();
   editProject:Project = new Project();
   editIndex:any = null;
@@ -17,21 +20,23 @@ export class ProjectsComponent implements OnInit {
   deleteIndex:any = null;
   searchBy :string = "ProjectName";
   searchText:string = "";
-  constructor(private projectService:ProjectsService) { }
+  constructor(private projectService:ProjectsService,private clientLocationService:ClientLocationsService) { }
 
   ngOnInit(): void {
     this.projectService.getAllProjects().subscribe(
       (response:Project[])=>{
        this.projects = response;
-      },
-      (error)=>{
-        console.log(error);
-        alert("Authentication Failed");
+      }
+    );
+    this.clientLocationService.getClientLocations().subscribe(
+      (response)=>{
+        this.clientLocations = response;
       }
     );
   }
 
   onSaveClick(){
+    this.newProject.clientLocation.clientLocationID = 0;
     this.projectService.insertProject(this.newProject).subscribe(
       (response)=>{
         var p:Project = new Project();
@@ -39,12 +44,20 @@ export class ProjectsComponent implements OnInit {
         p.projectName = response.projectName;
         p.dateOfStart = response.dateOfStart;
         p.teamSize = response.teamSize;
+        p.active = response.active;
+        p.clientLocationID = response.clientLocationID;
+        p.status = response.status;
+
         this.projects.push(p);
 
         this.newProject.projectID = null;
         this.newProject.projectName = null;
         this.newProject.teamSize = null;
         this.newProject.dateOfStart = null;
+        this.newProject.active = null;
+        this.newProject.clientLocationID = null;
+        this.newProject.status = null;
+
       },
       (error)=>{
         console.log(error);
@@ -54,8 +67,12 @@ export class ProjectsComponent implements OnInit {
   onEditClick(event:any,index:number){
    this.editProject.projectID = this.projects[index].projectID;
    this.editProject.projectName = this.projects[index].projectName;
-   this.editProject.dateOfStart = this.projects[index].dateOfStart;
+   this.editProject.dateOfStart = this.projects[index].dateOfStart.split("/").reverse().join("-");
    this.editProject.teamSize = this.projects[index].teamSize;
+   this.editProject.active = this.projects[index].active;
+   this.editProject.clientLocationID = this.projects[index].clientLocationID;
+   this.editProject.status = this.projects[index].status;
+
    this.editIndex = index;
   }
   onUpdateClick(){
@@ -66,11 +83,19 @@ export class ProjectsComponent implements OnInit {
         p.projectName = response.projectName;
         p.dateOfStart = response.dateOfStart;
         p.teamSize = response.teamSize;
+        p.active = response.active;
+        p.clientLocationID = response.clientLocationID;
+        p.status = response.status;
+
         this.projects[this.editIndex] = p;
         this.editProject.projectID = null;
         this.editProject.projectName = null;
         this.editProject.dateOfStart = null;
         this.editProject.teamSize = null;
+        this.editProject.active = null;
+        this.editProject.clientLocationID = null;
+        this.editProject.status = null;
+
     },
     ()=>{}
    );
