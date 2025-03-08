@@ -32,7 +32,9 @@ export class ProjectsService {
   }
 
   insertProject(newProject:Project):Observable<Project>{
-    return this.httpClient.post<Project>("/api/projects",newProject);
+    var headers1 = new HttpHeaders();
+    headers1.set("X-XSRF-TOKEN",sessionStorage.XSRFRequestToken);
+    return this.httpClient.post<Project>("/api/projects",newProject,{headers:headers1});
   }
 
   updateProject(existingroject:Project):Observable<Project>{

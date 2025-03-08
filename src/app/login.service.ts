@@ -15,14 +15,15 @@ export class LoginService {
   public login(loginViewModel:LoginViewModel):Observable<any>{
     this.httpClient  = new HttpClient(this.httpBackend);
 
-   return this.httpClient.post<any>("/authenticate",loginViewModel).pipe(map(user=>{
-     if(user)
+   return this.httpClient.post<any>("/authenticate",loginViewModel,{observe:"response"}).pipe(map(response=>{
+     if(response)
      {
 
-      this.currentUserName = user.userName;
-      sessionStorage.currentUser = JSON.stringify(user);
+      this.currentUserName = response.body.userName;
+      sessionStorage.currentUser = JSON.stringify(response.body);
+     sessionStorage.XSRFRequestToken = response.headers.get("XSRF-REQUEST-TOKEN");
      }
-     return user;
+     return response.body;
    }));
   }
   public logout(){
