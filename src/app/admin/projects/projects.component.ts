@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { ProjectsService } from '../../projects.service';
 import { Project } from 'src/app/project';
 import { ClientLocation } from 'src/app/client-location';
 import { ClientLocationsService } from 'src/app/client-locations.service';
-
+import {NgForm} from  '@angular/forms';
+import * as $ from "jquery";
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -20,6 +21,10 @@ export class ProjectsComponent implements OnInit {
   deleteIndex:any = null;
   searchBy :string = "ProjectName";
   searchText:string = "";
+  @ViewChild("newForm") newForm:NgForm;
+  @ViewChild("editForm") editForm:NgForm;
+
+
   constructor(private projectService:ProjectsService,private clientLocationService:ClientLocationsService) { }
 
   ngOnInit(): void {
@@ -36,6 +41,8 @@ export class ProjectsComponent implements OnInit {
   }
 
   onSaveClick(){
+    if(this.newForm.valid)
+    {   
     this.newProject.clientLocation.clientLocationID = 0;
     this.projectService.insertProject(this.newProject).subscribe(
       (response)=>{
@@ -57,14 +64,20 @@ export class ProjectsComponent implements OnInit {
         this.newProject.active = null;
         this.newProject.clientLocationID = null;
         this.newProject.status = null;
-
+        $('#newFormCancel').trigger("click");
       },
       (error)=>{
         console.log(error);
       }
     );
   }
+  }
+  onNewClick(event){
+   this.newForm.resetForm();
+  }
   onEditClick(event:any,index:number){
+    this.editForm.resetForm();
+    setTimeout(() => {
    this.editProject.projectID = this.projects[index].projectID;
    this.editProject.projectName = this.projects[index].projectName;
    this.editProject.dateOfStart = this.projects[index].dateOfStart.split("/").reverse().join("-");
@@ -74,8 +87,12 @@ export class ProjectsComponent implements OnInit {
    this.editProject.status = this.projects[index].status;
 
    this.editIndex = index;
+    }, 100);
+   
   }
   onUpdateClick(){
+    if(this.editForm.valid)
+    {    
    this.projectService.updateProject(this.editProject).subscribe(
     (response:Project)=>{
       var p:Project = new Project();
@@ -95,10 +112,11 @@ export class ProjectsComponent implements OnInit {
         this.editProject.active = null;
         this.editProject.clientLocationID = null;
         this.editProject.status = null;
-
+         $("#editFormCancel").trigger("click");
     },
     ()=>{}
    );
+  }
   }
 onDeleteClick(event:any,index:number){
     this.deleteIndex = index;
