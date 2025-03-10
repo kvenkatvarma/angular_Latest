@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup,FormArray } from '@angular/forms';
+import { FormControl, FormGroup,FormArray,FormBuilder } from '@angular/forms';
 import { CountriesService } from '../countries.service';
 import { Country } from '../country';
 
@@ -13,24 +13,24 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   genders =["male","female"];
   countries : Country[] = [];
-  constructor(private countryService:CountriesService) { }
+  constructor(private countryService:CountriesService,private formBuilder:FormBuilder) { }
 
   ngOnInit(): void {
      this.countries = this.countryService.getCountries();
 
-    this.signUpForm = new FormGroup({
-      personName: new FormGroup({
-        firstName:new FormControl(null),
-        lastName:new FormControl(null),
+    this.signUpForm = this.formBuilder.group({
+      personName: this.formBuilder.group({
+        firstName:null,
+        lastName:null,
       }),
 
-     email:new FormControl(null),
-     mobile:new FormControl(null),
-     dateOfBirth:new FormControl(null),
-     gender :new FormControl(null),
-     countryID : new FormControl(null),
-     receiveNewsLetters:new FormControl(null),
-     skills: new FormArray([])
+     email:null,
+     mobile:null,
+     dateOfBirth:null,
+     gender :null,
+     countryID : null,
+     receiveNewsLetters:null,
+     skills: this.formBuilder.array([])
     });
     this.signUpForm.valueChanges.subscribe(
       (value)=>{
@@ -51,9 +51,9 @@ export class SignUpComponent implements OnInit {
     });
   }
   onAddSkill(){
-   var formGroup = new FormGroup({
-    skillName:new FormControl(null),
-    level: new FormControl(null)
+   var formGroup = this.formBuilder.group({
+    skillName:null,
+    level: null
    });
    (<FormArray>this.signUpForm.get('skills')).push(formGroup);
   }
