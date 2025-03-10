@@ -6,7 +6,7 @@
             <h4>Sign Up</h4>
         </div>
         <div class="card-body">
-         
+
              <div class="form-group form-row" formGroupName="personName">
                <label for="firstName" class="col-md-4 col-form-label">First Name:</label>
                 <div class="col-md-8">
@@ -48,11 +48,11 @@
                  <div class="form-check-label form-check-inline" *ngFor="let gender of genders">
                     <input type="radio" name="gender" [id]="gender" [value]="gender" formControlName="gender" class="form-check-input">
                     <label [for]="gender" class="form-check-label">{{gender}}</label>
-                 </div>               
+                 </div>
                </div>
             </div>
 
-            
+
             <div class="form-group form-row">
               <label for="countryID" class="col-md-4 col-form-label">Country:</label>
                <div class="col-md-8">
@@ -63,7 +63,7 @@
                </div>
             </div>
 
-             
+
             <div class="form-group form-row">
               <label  class="col-md-4 col-form-label"></label>
                <div class="col-md-8">
@@ -72,7 +72,36 @@
                </div>
             </div>
 
-         
+            <div class="form-group form-row">
+              <label class="col-md-4 col-form-label">Skills:</label>
+              <div class="col-md-8" formArrayName="skills">
+                <div class="row" *ngFor="let skill of signUpForm.get('skills'); let i = index" [formGroupName]="i">
+
+                  <div class="col-5">
+                    <input type="text" name="skillName" id="skillName" placeholder="Skill Name" formControlName="skillName" class="form-control">
+                  </div>
+
+                  <div class="col-4">
+                    <select name="level" id="level" formControlName="level" class="form-control">
+                      <option value="null">Please Select</option>
+                      <option value="Beginner">Beginner</option>
+                      <option value="Intermediate">Intermediate</option>
+                      <option value="Professional">Professional</option>
+                      <option value="Expert">Expert</option>
+                    </select>
+                  </div>
+
+                  <div class="col-3">
+                    <button class="btn btn-danger" type="button" (click)="onRemoveClick(i)">Remove</button>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary" type="button" (click)="onAddSkill()">Add Skill</button>
+              </div>
+
+
+            </div>
+
           {{signUpForm.value | json}}
         </div>
         <div class="card-footer">
