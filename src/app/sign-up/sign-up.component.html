@@ -44,15 +44,10 @@
             <div class="form-group form-row">
               <label class="col-md-4 col-form-label">Gender:</label>
                <div class="col-md-8">
-                 <div class="form-check-label form-check-inline">
-                    <input type="radio" name="gender" id="male" value="male" formControlName="gender" class="form-check-input">
-                    <label for="male" class="form-check-label">Male</label>
-                 </div>
-
-                 <div class="form-check-label form-check-inline">
-                  <input type="radio" name="gender" id="female" value="female" formControlName="gender" class="form-check-input">
-                  <label for="female" class="form-check-label">Female</label>
-               </div>
+                 <div class="form-check-label form-check-inline" *ngFor="let gender of genders">
+                    <input type="radio" name="gender" [id]="gender" [value]="gender" formControlName="gender" class="form-check-input">
+                    <label [for]="gender" class="form-check-label">{{gender}}</label>
+                 </div>               
                </div>
             </div>
 
