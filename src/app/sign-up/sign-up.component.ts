@@ -34,5 +34,16 @@ export class SignUpComponent implements OnInit {
       }
     );
   }
-
+  onSubmitClick(){
+    this.signUpForm.setValue({
+    firstName : "Adam",
+    lastName: "Varma",
+    email : "abc@gmail.com",
+    mobile: "9898989879",
+    dateOfBirth: "2020-01-01",
+    gender:"male",
+    countryID:2,
+    receiveNewsLetters:true
+    });
+  }
 }
