@@ -23,6 +23,9 @@ export class ProjectsService {
     ));
   }
 
+  getProjectByProject(ProjectID:number):Observable<Project>{
+    return this.httpClient.get<Project>("/api/projects/searchbyprojectid" + ProjectID);
+  }
   insertProject(newProject:Project):Observable<Project>{
     var headers1 = new HttpHeaders();
     headers1.set("X-XSRF-TOKEN",sessionStorage.XSRFRequestToken);
