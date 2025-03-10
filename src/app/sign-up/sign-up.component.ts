@@ -17,7 +17,8 @@ export class SignUpComponent implements OnInit {
      lastName:new FormControl(null),
      email:new FormControl(null),
      mobile:new FormControl(null),
-     dateOfBirth:new FormControl(null)
+     dateOfBirth:new FormControl(null),
+     gender :new FormControl(null)
     });
   }
 
