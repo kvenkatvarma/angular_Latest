@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +7,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 export class CustomValidatorsService {
 
   constructor() { }
-  public static minimumAgeValidator(minAge:number):ValidatorFn{
+  public  minimumAgeValidator(minAge:number):ValidatorFn{
     return (control:AbstractControl) :ValidationErrors | null=>{
       if(!control.value)
       {
@@ -23,6 +23,23 @@ export class CustomValidatorsService {
       }
       else{
         return {minAge:{valid:false}};
+      }
+    };
+  }
+ 
+  public compareValidator(controlToValidate: string, controlToCompare: string): ValidatorFn
+  {
+    return (formGroup: AbstractControl): ValidationErrors | null =>
+    {
+      if (!(formGroup.get(controlToValidate) as FormControl).value)
+        return null; //return, if the confirm password is null
+
+      if ((formGroup.get(controlToValidate) as FormControl).value == (formGroup.get(controlToCompare) as any).value)
+        return null; //valid
+      else
+      {
+        (formGroup.get(controlToValidate) as FormControl).setErrors({ compareValidator: { valid: false } });
+        return { compareValidator: { valid: false } }; //invalid
       }
     };
   }

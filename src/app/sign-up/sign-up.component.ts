@@ -14,7 +14,7 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   genders =["male","female"];
   countries : Country[] = [];
-  constructor(private countryService:CountriesService,private formBuilder:FormBuilder) { }
+  constructor(private countryService:CountriesService,private formBuilder:FormBuilder,private customValidatorsService:CustomValidatorsService) { }
 
   ngOnInit(): void {
      this.countries = this.countryService.getCountries();
@@ -27,11 +27,15 @@ export class SignUpComponent implements OnInit {
 
       email: [null, [Validators.required, Validators.email]],
       mobile: [null, [Validators.required, Validators.pattern(/^[789]\d{9}$/)]],
-      dateOfBirth: [null, [Validators.required,CustomValidatorsService.minimumAgeValidator(18)]],
+      dateOfBirth: [null, [Validators.required,this.customValidatorsService.minimumAgeValidator(18)]],
+      password:[null,[Validators.required]],
+      confirmPassword:[null,[Validators.required]],
       gender: [null, [Validators.required]],
       countryID: [null, [Validators.required]],
      receiveNewsLetters:null,
      skills: this.formBuilder.array([])
+    },{
+      validators:[this.customValidatorsService.compareValidator("confirmPassword","password")]
     });
     this.signUpForm.valueChanges.subscribe(
       (value)=>{
